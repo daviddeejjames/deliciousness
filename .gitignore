@@ -1,0 +1,6 @@
+public/dist/
+node_modules
+variables.env
+*.env
+.DS_store
+package-lock.json
