@@ -1,6 +1,6 @@
-## What is this?
+# Deliciousness
 
-Just you wait folks!
+A Node.js application made by following the Learn Node course by Wes Bos.
 
 ## Sample Data
 
