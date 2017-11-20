@@ -5,3 +5,9 @@ exports.homePage = (req, res) => {
     dog: 'Beesa'
   });
 };
+
+exports.addStore = (req, res) => {
+   res.render('editStore', {
+    title: 'Add Store',
+  });
+};
