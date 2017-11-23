@@ -14,10 +14,12 @@ body {
   }
 }
 
-.inner {
+.inner,
+.content {
   max-width:900px;
   margin: 0 auto;
   @media all and (max-width: 900px) {
     padding: 2rem;
   }
 }
+
