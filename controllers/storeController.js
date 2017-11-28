@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 const Store = mongoose.model('Store'); // Already imported in app.js
+const multer = require('multer');
+const jimp = require('jimp');
+const uuid = require('uuid');
+
+const multerOptions = {
+  storage: multer.memoryStorage(),
+  fileFilter: function(req, file, next) {
+    const isPhoto = file.mimetype.startsWith('image/');
+    if(isPhoto){
+      next(null, true);
+    } else {
+      next({ message: 'That filetype isn\'t allowed!' }, false);
+    }
+  }
+}
 
 exports.homePage = (req, res) => {
   res.render('index', {
@@ -13,6 +28,26 @@ exports.addStore = (req, res) => {
    res.render('editStore', {
     title: 'Add Store',
   });
+};
+
+exports.upload = multer(multerOptions).single('photo');
+
+exports.resize = async (req, res, next) => {
+  // check if there is no new file to resize
+  if(!req.file){
+    next(); // skip to the next middleware
+    return;
+  }
+
+  const extension = req.file.mimetype.split('/')[1];
+  req.body.photo = `${uuid.v4()}.${extension}`;
+  // now we resize
+  const photo = await jimp.read(req.file.buffer);
+  await photo.resize(800, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+
+  //once we have wriiten the photo to our filesystem, keep going!
+  next();
 };
 
 exports.createStore = async (req, res) => {
@@ -29,6 +64,9 @@ exports.getStores = async (req, res) => {
 };
 
 exports.editStore = async (req, res) => {
+  // Set the location data to be a point by default
+  // req.body.location.type = 'Point';
+
   // 1. Find store given ID
   const store = await Store.findOne({ _id: req.params.id });
 
