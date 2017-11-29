@@ -16,14 +16,6 @@ const multerOptions = {
   }
 }
 
-exports.homePage = (req, res) => {
-  res.render('index', {
-    title: 'Hey there',
-    name: 'David',
-    dog: 'Beesa'
-  });
-};
-
 exports.addStore = (req, res) => {
    res.render('editStore', {
     title: 'Add Store',
@@ -93,4 +85,14 @@ exports.getStoreBySlug = async (req, res, next) => {
   }
 
   res.render('singleStore', { title: `${store.name}`, store });
-}
+};
+
+exports.getStoreByTag = async (req, res, next) => {
+  const tag =  req.params.tag;
+  const tagQuery = tag || { $exists: true };
+  const tagsPromise = Store.getTagsList();
+  const storePromise = Store.find( {tags: tagQuery });
+  const [tags, stores] = await Promise.all([tagsPromise, storePromise]);
+
+  res.render('tags', {title: `${tag || 'Tags'}`, tags, tag, stores});
+};
