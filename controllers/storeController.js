@@ -14,10 +14,10 @@ const multerOptions = {
       next({ message: 'That filetype isn\'t allowed!' }, false);
     }
   }
-}
+};
 
 exports.addStore = (req, res) => {
-   res.render('editStore', {
+  res.render('editStore', {
     title: 'Add Store',
   });
 };
@@ -25,10 +25,11 @@ exports.addStore = (req, res) => {
 exports.upload = multer(multerOptions).single('photo');
 
 exports.resize = async (req, res, next) => {
-  // check if there is no new file to resize
+
   if(!req.file){
+  // check if there is no new file to resize
     next(); // skip to the next middleware
-    return;
+    // return;
   }
 
   const extension = req.file.mimetype.split('/')[1];

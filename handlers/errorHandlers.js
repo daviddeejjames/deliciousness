@@ -43,7 +43,7 @@ exports.flashValidationErrors = (err, req, res, next) => {
 
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
-exports.developmentErrors = (err, req, res, next) => {
+exports.developmentErrors = (err, req, res) => {
   err.stack = err.stack || '';
   const errorDetails = {
     message: err.message,
@@ -66,7 +66,7 @@ exports.developmentErrors = (err, req, res, next) => {
 
   No stacktraces are leaked to user
 */
-exports.productionErrors = (err, req, res, next) => {
+exports.productionErrors = (err, req, res) => {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
