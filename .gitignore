@@ -2,9 +2,9 @@
 *.log
 variables.env
 variables.env.now
-public/dist/
 node_modules
 .idea
 .DS_store
 package-lock.json
 public/uploads/*
+public/dist/*
