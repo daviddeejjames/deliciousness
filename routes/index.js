@@ -33,6 +33,8 @@ router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoreByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoreByTag));
 
+// User login and register
 router.get('/login', userController.loginForm);
+router.get('/register', userController.registerForm);
 
 module.exports = router;
