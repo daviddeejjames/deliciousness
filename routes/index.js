@@ -12,7 +12,7 @@ router.get('/', catchErrors(storeController.getStores));
 router.get('/stores', catchErrors(storeController.getStores));
 
 // Controls the adding and editing of stores
-router.get('/add', storeController.addStore);
+router.get('/add', authController.isLoggedIn, storeController.addStore);
 
 router.post('/add',
   storeController.upload,
@@ -34,11 +34,25 @@ router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoreByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoreByTag));
 
-// User login and register
+// Account
+router.get('/account', authController.isLoggedIn, userController.account);
+router.post('/account', catchErrors(userController.updateAccount));
+router.post('/account/forgot', catchErrors(authController.forgotPassword));
+router.get('/account/reset/:token',
+  catchErrors(authController.resetPassword)
+);
+router.post('/account/reset/:token',
+  authController.confirmedPasswords,
+  catchErrors(authController.updatePassword)
+);
+
+// Login
 router.get('/login', userController.loginForm);
-router.get('/register', userController.registerForm);
+router.post('/login', authController.login);
+
 
 // Register
+router.get('/register', userController.registerForm);
 router.post('/register',
   userController.validateRegister,
   catchErrors(userController.register),

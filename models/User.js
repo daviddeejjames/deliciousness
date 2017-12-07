@@ -18,7 +18,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: 'Please supply a name',
     trim: true
+  },
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
   }
+});
+
+userSchema.virtual('gravatar').get(function() {
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`;
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
