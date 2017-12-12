@@ -62,4 +62,7 @@ router.post('/register',
 // Logout
 router.get('/logout', authController.logout);
 
+// API
+router.get('/api/search', catchErrors(storeController.searchStores));
+
 module.exports = router;
