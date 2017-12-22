@@ -65,8 +65,12 @@ router.get('/logout', authController.logout);
 // Map
 router.get('/map', storeController.mapPage);
 
+// Hearts
+router.get('/hearts', authController.isLoggedIn, catchErrors(storeController.getHearts));
+
 // API
 router.get('/api/search', catchErrors(storeController.searchStores));
 router.get('/api/stores/near', catchErrors(storeController.mapStores));
+router.post('/api/stores/:id/heart', catchErrors(storeController.heartStore));
 
 module.exports = router;

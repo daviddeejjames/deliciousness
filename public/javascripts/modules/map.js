@@ -52,7 +52,8 @@ function loadPlaces(map, lat = defLat, lng = defLng) {
       // zoom map to fit all markers
       map.setCenter(bounds.getCenter());
       map.fitBounds(bounds);
-    });
+    })
+    .catch(console.error);
 }
 
 function makeMap(mapDiv) {
