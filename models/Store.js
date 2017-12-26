@@ -71,11 +71,33 @@ storeSchema.pre('save', async function(next){
   next(); // Needed for save to occur
 });
 
+// Custom query to get all the store tags (and the num if them)
 storeSchema.statics.getTagsList = function() {
   return this.aggregate([
     { $unwind: '$tags' },
     { $group: { _id: '$tags', count: { $sum: 1 } } },
-    { $sort: { count: -1 }}
+    { $sort: { count: -1 } }
+  ]);
+};
+
+// Custom query to get Top Rated Stores
+storeSchema.statics.getTopStores = function () {
+  return this.aggregate([
+    // Look stores and populate their reviews
+    { $lookup:
+      { from: 'reviews', localField: '_id',
+        foreignField: 'store', as: 'reviews' }
+    },
+    // Filter for only items that have 2 or more reviews
+    { $match: { 'reviews.1': { $exists: true } } },
+    // Add the average reveiws field
+    { $addFields: {
+      averageRating: { $avg: '$reviews.rating' }
+    }},
+    // Sor it by out new field, highest reviews first
+    { $sort: { averageRating: -1 } },
+    // Only show 10
+    { $limit: 10 }
   ]);
 };
 
@@ -84,5 +106,13 @@ storeSchema.virtual('reviews', {
   localField: '_id', // which field on store
   foreignField: 'store' // which field on review
 });
+
+function autopopulate(next) {
+  this.populate('reviews');
+  next();
+}
+
+storeSchema.pre('find', autopopulate);
+storeSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Store', storeSchema);

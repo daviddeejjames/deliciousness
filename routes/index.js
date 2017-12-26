@@ -11,6 +11,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 // Creates our store index/archive pages
 router.get('/', catchErrors(storeController.getStores));
 router.get('/stores', catchErrors(storeController.getStores));
+router.get('/stores/page/:page', catchErrors(storeController.getStores));
 
 // Controls the adding and editing of stores
 router.get('/add', authController.isLoggedIn, storeController.addStore);
@@ -71,6 +72,9 @@ router.get('/hearts', authController.isLoggedIn, catchErrors(storeController.get
 
 // Reviews
 router.post('/reviews/:id', authController.isLoggedIn, catchErrors(reviewController.addReview));
+
+// Top
+router.get('/top', catchErrors(storeController.getTopStores));
 
 // API
 router.get('/api/search', catchErrors(storeController.searchStores));
