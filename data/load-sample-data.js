@@ -1,3 +1,6 @@
+// Need to ignore eslint console error for dev environment stuff
+/* eslint-disable no-console */
+
 require('dotenv').config({ path: __dirname + '/../variables.env' });
 const fs = require('fs');
 

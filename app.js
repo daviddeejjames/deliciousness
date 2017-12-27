@@ -13,6 +13,8 @@ const routes = require('./routes/index');
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 
+require('./handlers/passport'); // Setup passport strategy for User
+
 // create our Express app
 const app = express();
 
@@ -59,7 +61,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// promisify some callback based APIs
+// Promisify some callback based APIs
 app.use((req, res, next) => {
   req.login = promisify(req.login, req);
   next();

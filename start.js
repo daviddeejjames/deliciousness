@@ -1,3 +1,6 @@
+// Need to ignore eslint console error for dev environment stuff
+/* eslint-disable no-console */
+
 const mongoose = require('mongoose');
 
 // Make sure we are running node 7.6+
@@ -19,6 +22,10 @@ mongoose.connection.on('error', (err) => {
 
 // READY?! Let's go!
 
+// Import all of our models
+require('./models/User');
+require('./models/Store');
+require('./models/Review');
 
 // Start our app!
 const app = require('./app');
